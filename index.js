@@ -2,5 +2,9 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-rasterize'
+  name: 'ember-rasterize',
+
+  isDevelopingAddon: function() {
+    return true;
+  }
 };

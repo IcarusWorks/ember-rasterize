@@ -1,7 +1,7 @@
 {
   "name": "ember-rasterize",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.1.0",
+  "description": "Rasterize HTML or SVG to an image in Ember. Useful for rendering HTML and SVG charts in PDFs.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,11 +11,11 @@
     "start": "ember server",
     "test": "ember try:each"
   },
-  "repository": "",
+  "repository": "https://github.com/IcarusWorks/ember-rasterize",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Patrick Berkeley <@patrickberkeley>",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
@@ -41,10 +41,21 @@
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember rasterization",
+    "rasterization",
+    "rasterize",
+    "rasterize SVG",
+    "rasterize HTML",
+    "rasterize chart for PDF",
+    "SVG to image",
+    "HTML to image"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.1.6"
+    "ember-browserify": "1.1.12",
+    "ember-cli-babel": "^5.1.6",
+    "ember-concurrency": "0.7.15",
+    "rasterizehtml": "^1.2.3"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

@@ -1,26 +1,42 @@
-# Ember-rasterize
+# ember-rasterize
 
-This README outlines the details of collaborating on this Ember addon.
+Rasterize HTML or SVG to an image in Ember. Useful for rendering HTML and SVG
+charts in PDFs.
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+In the root of your Ember application run:
 
-## Running
+```sh
+ember install ember-rasterize
+```
 
-* `ember serve`
-* Visit your app at http://localhost:4200.
+## Usage
 
-## Running Tests
+### `rasterize(type, source[, fontMultiplier])`
 
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+Import `ember-rasterize` and call `rasterize` with `type`, `source`, and
+optionally a `fontMultiplier`.
 
-## Building
+```js
+import { rasterize } from 'ember-rasterize';
 
-* `ember build`
+export default Ember.Component.extend({
+  myRasterize() {
+    const html = '<span>stuff</span>';
+    return rasterize('html', html, 1.3);
+  },
+});
+```
 
-For more information on using ember-cli, visit [http://ember-cli.com/](http://ember-cli.com/).
+#### Parameters
+
+| Name             | Type   | Required | Default  | Description                                       |
+| ---------------- | ------ | -------- | -------- | ------------------------------------------------- |
+| `type`           | string | Yes      | `<none>` | Valid options are `html` or `svg`.                |
+| `source`         | string | Yes      | `<none>` | An HTMl or SVG string.                            |
+| `fontMultiplier` | number | No       | `1`      | A multiplier by which to increase all font sizes. |
+
+#### Returns
+
+A URL encoded PNG image.
