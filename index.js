@@ -5,6 +5,6 @@ module.exports = {
   name: 'ember-rasterize',
 
   isDevelopingAddon: function() {
-    return true;
+    return false;
   }
 };
