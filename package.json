@@ -1,6 +1,6 @@
 {
   "name": "ember-rasterize",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Rasterize HTML or SVG to an image in Ember. Useful for rendering HTML and SVG charts in PDFs.",
   "directories": {
     "doc": "doc",
