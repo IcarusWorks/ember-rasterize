@@ -10,7 +10,7 @@ const {
 } = Ember;
 
 const rasterizer = {
-  fontMultiplier: 1,
+  fontSize: 1,
 
   rasterizeHtml: task(function * (html) {
     const inlinedStylesEl = this.inlineStyles(html);
@@ -107,13 +107,36 @@ const rasterizer = {
           // Group #5: 23.33px
           // Group #6: 23.33
           // Group #7:  normal sans-serif
-          const fontMultiplier = get(this, 'fontMultiplier');
-          const pattern = /((?:\D|\s|\-)+)((\d*\.?\d+)px)( \/ )((\d*\.?\d+)px)?((?:\D|\s|\-)+)/ig;
-          const updatedPropValue = propValue.replace(pattern, (match, g1, g2, g3, g4, g5, g6, g7) => {
-            const increasedFontSize = `${g3 * fontMultiplier}px`;
-            const increasedLineHeight = g6 ? `${g6 * fontMultiplier}px` : '';
+          const fontSize = get(this, 'fontSize.size');
+          const fontSizeUnits = get(this, 'fontSize.units');
+          const pattern = /((?:\D|\s|\-)+)((\d*\.?\d+)px)( \/ )((\d*\.?\d+)px|normal)((?:\D|\s|\-)+)/ig;
+          const updatedPropValue = propValue.replace(pattern, (
+            match,
+            fontStyleVariantWeightStretch,
+            fontSz,
+            fontSizeValue,
+            separator,
+            lineHeight,
+            lineHeightValue,
+            fontFamily
+          ) => {
+            const {
+              increasedFontSize,
+              increasedLineHeight,
+            } = computeFontSize(
+              fontSize,
+              fontSizeUnits,
+              fontSizeValue,
+              lineHeight,
+              lineHeightValue
+            );
 
-            return `${g1}${increasedFontSize}${g4}${increasedLineHeight}${g7}`;
+            return `
+              ${fontStyleVariantWeightStretch}
+              ${increasedFontSize}
+              ${separator}
+              ${increasedLineHeight} ${fontFamily}
+            `;
           });
 
           styleString += `${propName}:${updatedPropValue};`;
@@ -127,8 +150,46 @@ const rasterizer = {
   },
 };
 
-export function rasterize(type, source, fontMultiplier=1) {
-  set(rasterizer, 'fontMultiplier', fontMultiplier);
+function computeFontSize(
+    fontSize,
+    fontSizeUnits,
+    fontSizeValue,
+    lineHeight,
+    lineHeightValue
+  ) {
+  let increasedFontSize, increasedLineHeight;
+
+  if (fontSizeUnits) {
+    increasedFontSize = `${fontSize}${fontSizeUnits}`;
+    increasedLineHeight = lineHeightValue ? increasedFontSize : lineHeight;
+  } else {
+    increasedFontSize = `${fontSizeValue * fontSize}px`;
+    increasedLineHeight = lineHeightValue ? `${lineHeightValue * fontSize}px` : lineHeight;
+  }
+  return {
+    increasedFontSize,
+    increasedLineHeight,
+  };
+}
+
+function initFontSize(size) {
+  size = size.toString();
+  const unitsRegex = /(cm|em|ex|in|mm|pc|pt|px|rem)$/;
+  const splitSize = size.split(unitsRegex);
+  size = splitSize[0];
+  const units = splitSize[1];
+
+  return {
+    size,
+    units,
+  };
+}
+
+export function rasterize(type, source, fontSize=1) {
+  const splitFontSize = initFontSize(fontSize);
+
+  set(rasterizer, 'fontSize', splitFontSize);
+
   return get(rasterizer, `rasterize${type.capitalize()}`)
     .perform(source);
 }
