@@ -15,16 +15,22 @@ ember install ember-rasterize
 
 ### `rasterize(type, source[, fontSize])`
 
-Import `ember-rasterize` and call `rasterize` with `type`, `source`, and
+Inject the rasterizer service and call `rasterize` with `type`, `source`, and
 optionally a `fontSize`.
 
 ```js
-import { rasterize } from 'ember-rasterize';
+import Ember from 'ember';
+
+const {
+  inject,
+} = Ember;
 
 export default Ember.Component.extend({
+  rasterizer: inject.service(),
+
   myRasterize() {
-    const html = '<span>stuff</span>';
-    return rasterize('html', html, 1.3);
+    const html = this.$();
+    return get(this, 'rasterizer').rasterize('html', html, 1.3);
   },
 });
 ```
@@ -34,7 +40,7 @@ export default Ember.Component.extend({
 | Name       | Type          | Required | Default  | Description
 | ---------- | ------------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
 | `type`     | string        | Yes      | `<none>` | Valid options are `html` or `svg`.                                                                                  |
-| `source`   | string        | Yes      | `<none>` | An HTMl or SVG string.                                                                                              |
+| `source`   | string        | Yes      | `<none>` | An HTML or SVG string.                                                                                              |
 | `fontSize` | number/string | No       | `1`      | A multiplier by which to increase all font sizes – or – a CSS font size string e.g., `10px`, `1rem`, `3.2em`, etc.  |
 
 #### Returns
