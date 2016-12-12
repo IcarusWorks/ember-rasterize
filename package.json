@@ -52,7 +52,7 @@
     "HTML to image"
   ],
   "dependencies": {
-    "ember-browserify": "1.1.12",
+    "ember-browserify": "1.1.13",
     "ember-cli-babel": "^5.1.6",
     "ember-concurrency": "0.7.15",
     "rasterizehtml": "^1.2.3"
